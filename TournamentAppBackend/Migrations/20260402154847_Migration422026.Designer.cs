@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TournamentAppBackend;
@@ -11,9 +12,11 @@ using TournamentAppBackend;
 namespace TournamentAppBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260402154847_Migration422026")]
+    partial class Migration422026
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -69,49 +72,6 @@ namespace TournamentAppBackend.Migrations
                     b.ToTable("Groups");
                 });
 
-            modelBuilder.Entity("TournamentAppBackend.Model.KnockoutMatch", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int?>("AwayScore")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid?>("AwayTeamId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("BracketRound")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("HomeScore")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid?>("HomeTeamId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsThirdPlace")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Played")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("Position")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("TournamentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("WinnerId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TournamentId");
-
-                    b.ToTable("KnockoutMatches");
-                });
-
             modelBuilder.Entity("TournamentAppBackend.Model.Match", b =>
                 {
                     b.Property<Guid>("Id")
@@ -158,37 +118,6 @@ namespace TournamentAppBackend.Migrations
                     b.HasIndex("TournamentId");
 
                     b.ToTable("Matches");
-                });
-
-            modelBuilder.Entity("TournamentAppBackend.Model.PlacementMatch", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int?>("AwayScore")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("AwayTeamId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int?>("HomeScore")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("HomeTeamId")
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("Played")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("TournamentId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TournamentId");
-
-                    b.ToTable("PlacementMatches");
                 });
 
             modelBuilder.Entity("TournamentAppBackend.Model.RefereeAssignment", b =>
@@ -247,12 +176,6 @@ namespace TournamentAppBackend.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("KnockoutStarted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("KnockoutTeamCount")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -331,15 +254,6 @@ namespace TournamentAppBackend.Migrations
                     b.Navigation("Tournament");
                 });
 
-            modelBuilder.Entity("TournamentAppBackend.Model.KnockoutMatch", b =>
-                {
-                    b.HasOne("TournamentAppBackend.Model.Tournament", null)
-                        .WithMany("KnockoutMatches")
-                        .HasForeignKey("TournamentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("TournamentAppBackend.Model.Match", b =>
                 {
                     b.HasOne("TournamentAppBackend.Model.Team", "AwayTeam")
@@ -373,15 +287,6 @@ namespace TournamentAppBackend.Migrations
                     b.Navigation("HomeTeam");
 
                     b.Navigation("Tournament");
-                });
-
-            modelBuilder.Entity("TournamentAppBackend.Model.PlacementMatch", b =>
-                {
-                    b.HasOne("TournamentAppBackend.Model.Tournament", null)
-                        .WithMany("PlacementMatches")
-                        .HasForeignKey("TournamentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("TournamentAppBackend.Model.RefereeAssignment", b =>
@@ -419,13 +324,6 @@ namespace TournamentAppBackend.Migrations
                     b.Navigation("Goals");
 
                     b.Navigation("RefereeAssignments");
-                });
-
-            modelBuilder.Entity("TournamentAppBackend.Model.Tournament", b =>
-                {
-                    b.Navigation("KnockoutMatches");
-
-                    b.Navigation("PlacementMatches");
                 });
 #pragma warning restore 612, 618
         }

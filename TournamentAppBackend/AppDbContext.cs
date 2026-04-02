@@ -12,6 +12,8 @@ namespace TournamentAppBackend
         public DbSet<Match> Matches => Set<Match>();
         public DbSet<RefereeAssignment> RefereeAssignments => Set<RefereeAssignment>();
         public DbSet<Goal> Goals => Set<Goal>();
+        public DbSet<KnockoutMatch> KnockoutMatches => Set<KnockoutMatch>();
+        public DbSet<PlacementMatch> PlacementMatches => Set<PlacementMatch>();
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)

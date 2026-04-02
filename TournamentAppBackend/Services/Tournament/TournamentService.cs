@@ -21,7 +21,11 @@ namespace TournamentAppBackend.Services.Tournaments
                 Name = dto.Name,
                 StartDate = dto.StartDate,
                 EndDate = dto.EndDate,
-                Status = "DRAFT"
+                Status = "DRAFT",
+                KnockoutStarted = false,
+                KnockoutTeamCount = 0,
+                KnockoutMatches = [],
+                PlacementMatches = []
             };
 
             _db.Add(tournament);
@@ -33,13 +37,18 @@ namespace TournamentAppBackend.Services.Tournaments
         public async Task<List<TournamentResponseDTO>> GetAllAsync()
         {
             return await _db.Set<Tournament>()
+                .Include(t => t.KnockoutMatches)
+                .Include(t => t.PlacementMatches)
                 .Select(t => Map(t))
                 .ToListAsync();
         }
 
         public async Task<TournamentResponseDTO> GetByIdAsync(Guid id)
         {
-            var tournament = await _db.Set<Tournament>().FindAsync(id);
+            var tournament = await _db.Set<Tournament>()
+                .Include(t => t.KnockoutMatches)
+                .Include(t => t.PlacementMatches)
+                .FirstOrDefaultAsync(t => t.Id == id);
 
             if (tournament == null)
                 throw new Exception("Tournament not found");
@@ -81,7 +90,11 @@ namespace TournamentAppBackend.Services.Tournaments
                 Name = t.Name,
                 StartDate = t.StartDate,
                 EndDate = t.EndDate,
-                Status = t.Status
+                Status = t.Status,
+                KnockoutStarted = t.KnockoutStarted,
+                KnockoutTeamCount = t.KnockoutTeamCount,
+                KnockoutMatches = t.KnockoutMatches,
+                PlacementMatches = t.PlacementMatches
             };
         }
     }

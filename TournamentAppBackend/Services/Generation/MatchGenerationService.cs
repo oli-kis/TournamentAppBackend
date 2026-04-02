@@ -37,7 +37,7 @@ namespace TournamentAppBackend.Services.Matches
                 if (teams.Count < 2)
                     continue;
 
-                var groupMatches = GenerateRoundRobinForGroup(teams, group.Id);
+                var groupMatches = GenerateRoundRobinForGroup(teams, group.Id, tournament.Id);
                 allMatches.AddRange(groupMatches);
             }
 
@@ -50,7 +50,7 @@ namespace TournamentAppBackend.Services.Matches
             };
         }
 
-        private List<Match> GenerateRoundRobinForGroup(List<Team> teams, Guid groupId)
+        private List<Match> GenerateRoundRobinForGroup(List<Team> teams, Guid groupId, Guid tournamentId)
         {
             var matches = new List<Match>();
             var teamList = new List<Team>(teams);
@@ -84,10 +84,12 @@ namespace TournamentAppBackend.Services.Matches
                     matches.Add(new Match
                     {
                         Id = Guid.NewGuid(),
+                        TournamentId = tournamentId,
                         GroupId = groupId,
                         HomeTeamId = homeTeam.Id,
                         AwayTeamId = awayTeam.Id,
-                        Status = "SCHEDULED"
+                        Status = "SCHEDULED",
+                        Pitch = "defaultPitch"
                     });
                 }
             }

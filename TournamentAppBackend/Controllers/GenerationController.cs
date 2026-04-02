@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TournamentAppBackend.Services.Generation;
+
 namespace TournamentAppBackend.Controllers
 {
     [ApiController]

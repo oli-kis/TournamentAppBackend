@@ -6,6 +6,7 @@ using System.Text;
 using TournamentAppBackend;
 using TournamentAppBackend.Services.Generation;
 using TournamentAppBackend.Services.Groups;
+using TournamentAppBackend.Services.Knockout;
 using TournamentAppBackend.Services.Matches;
 using TournamentAppBackend.Services.Standings;
 using TournamentAppBackend.Services.Teams;
@@ -52,6 +53,7 @@ builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddScoped<IStandingService, StandingService>();
 builder.Services.AddScoped<IMatchGenerationService, MatchGenerationService>();
+builder.Services.AddScoped<IKnockoutService, KnockoutService>();
 
 builder.Services.AddCors(options =>
 {

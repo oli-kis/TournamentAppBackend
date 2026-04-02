@@ -252,8 +252,8 @@ namespace TournamentAppBackend.Services.Matches
             if (match == null)
                 throw new Exception("Match not found");
 
-            if (match.Status != "LIVE")
-                throw new Exception("Goals can only be added while match is live");
+            //if (match.Status != "LIVE")
+            //    throw new Exception("Goals can only be added while match is live");
 
             if (dto.TeamId != match.HomeTeamId && dto.TeamId != match.AwayTeamId)
                 throw new Exception("Team does not belong to this match");
@@ -321,8 +321,8 @@ namespace TournamentAppBackend.Services.Matches
             if (match == null)
                 throw new Exception("Match not found");
 
-            if (match.Status != "LIVE")
-                throw new Exception("Only live matches can be finished");
+            //if (match.Status != "LIVE")
+            //    throw new Exception("Only live matches can be finished");
 
             match.Status = "FINISHED";
             match.FinishedAt = DateTime.UtcNow;
