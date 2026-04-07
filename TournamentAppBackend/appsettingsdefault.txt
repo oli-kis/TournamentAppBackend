@@ -7,7 +7,7 @@
   },
   "AllowedHosts": "*",
   "ConnectionStrings": {
-    "DefaultConnection": "Host=dpg-d7aiqhshg0os73ejnt70-a.frankfurt-postgres.render.com;Port=5432;Database=fcfricktournament;Username=olivierkistleradmin;Password=ohupOJZR6Rr7JIaf4jmE71puVji12Bu5"
+    "DefaultConnection": "Host=localhost;Port=5432;Database=tournamentdb;Username=postgres;Password=postgresql11!"
   },
   "Jwt": {
     "Key": "UzwkKl83Sh3tFTmSwvYkwESiUkXjsewBmzm5DTwNB7O",
