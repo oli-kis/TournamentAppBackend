@@ -15,7 +15,6 @@ namespace TournamentAppBackend.Controllers
             _service = service;
         }
 
-        // POST /api/v1/tournaments/{id}/generate-matches
         [Authorize(Roles = "ADMIN")]
         [HttpPost("{tournamentId}/generate-matches")]
         public async Task<IActionResult> Generate(Guid tournamentId)

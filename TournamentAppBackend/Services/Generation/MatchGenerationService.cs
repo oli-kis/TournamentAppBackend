@@ -26,6 +26,13 @@ namespace TournamentAppBackend.Services.Matches
                 .Where(g => g.TournamentId == tournamentId)
                 .ToListAsync();
 
+            if (tournament == null)
+                throw new Exception("Tournament not found");
+
+            if (tournament.StartDate == null)
+                throw new Exception("Tournament must have a start date");
+
+            var matches = new List<Match>();
             var allMatches = new List<Match>();
 
             foreach (var group in groups)
@@ -41,12 +48,44 @@ namespace TournamentAppBackend.Services.Matches
                 allMatches.AddRange(groupMatches);
             }
 
-            _db.Matches.AddRange(allMatches);
+            var pitches = tournament.Pitches;
+            var matchLength = tournament.MatchLengthInMinutes;
+            var transitionMinutes = tournament.TransitionTime;
+
+            // Ensure UTC
+            var currentStart = DateTime.SpecifyKind(
+                tournament.StartDate.Value,
+                DateTimeKind.Utc
+            );
+
+            for (int i = 0; i < allMatches.Count; i++)
+            {
+                var match = allMatches[i];
+
+                // Determine pitch (1..N)
+                var pitchNumber = (i % pitches) + 1;
+
+                // Every "batch" of matches shares the same start time
+                match.ScheduledStart = currentStart;
+                match.Pitch = pitchNumber.ToString();
+
+                matches.Add(match);
+
+                // After filling one full batch → move time forward
+                var isEndOfBatch = (i + 1) % pitches == 0;
+
+                if (isEndOfBatch)
+                {
+                    currentStart = currentStart.AddMinutes(matchLength + transitionMinutes);
+                }
+            }
+
+            _db.Matches.AddRange(matches);
             await _db.SaveChangesAsync();
 
             return new GenerateMatchesResponseDTO
             {
-                MatchesCreated = allMatches.Count
+                MatchesCreated = matches.Count
             };
         }
 
@@ -89,7 +128,8 @@ namespace TournamentAppBackend.Services.Matches
                         HomeTeamId = homeTeam.Id,
                         AwayTeamId = awayTeam.Id,
                         Status = "SCHEDULED",
-                        Pitch = "defaultPitch"
+                        Pitch = "0",
+                        ScheduledStart = DateTime.UtcNow,
                     });
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TournamentAppBackend.DTO.Teams;
+using TournamentAppBackend.DTO.Search;
 using TournamentAppBackend.Model;
 
 namespace TournamentAppBackend.Services.Teams
@@ -50,6 +51,27 @@ namespace TournamentAppBackend.Services.Teams
                 throw new Exception("Team not found");
 
             return Map(team);
+        }
+
+        public async Task<List<SearchResponseDTO>> SearchAsync(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return new List<SearchResponseDTO>();
+
+            return await _db.Teams
+                .Where(t => t.Name.Contains(name))
+                .Select(t => new SearchResponseDTO
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+
+                    GroupId = t.GroupId,
+                    GroupName = t.Group.Name,
+
+                    TournamentId = t.Group.TournamentId,
+                    TournamentName = t.Group.Tournament.Name
+                })
+                .ToListAsync();
         }
 
         public async Task<TeamResponseDTO> UpdateAsync(Guid id, UpdateTeamDTO dto)

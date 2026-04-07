@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TournamentAppBackend.DTO.Knockout;
 using TournamentAppBackend.DTO.Match;
 using TournamentAppBackend.Services.Knockout;
@@ -7,6 +8,7 @@ namespace TournamentAppBackend.Controllers
 {
     [ApiController]
     [Route("api/v1")]
+    [Authorize(Roles = "ADMIN")]
     public class KnockoutController : ControllerBase
     {
         private readonly IKnockoutService _service;

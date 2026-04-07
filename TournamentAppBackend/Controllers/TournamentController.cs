@@ -7,7 +7,6 @@ namespace TournamentAppBackend.Controllers
 {
     [ApiController]
     [Route("api/v1/tournaments")]
-    [Authorize(Roles = "ADMIN")]
     public class TournamentController : ControllerBase
     {
         private readonly ITournamentService _service;
@@ -17,6 +16,7 @@ namespace TournamentAppBackend.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateTournamentDTO dto)
         {
@@ -24,6 +24,7 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -31,6 +32,7 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -38,6 +40,7 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPatch("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateTournamentDTO dto)
         {
@@ -45,10 +48,19 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _service.DeleteAsync(id);
+            return NoContent();
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpDelete()]
+        public async Task<IActionResult> DeleteAll()
+        {
+            await _service.DeleteAllAsync();
             return NoContent();
         }
     }

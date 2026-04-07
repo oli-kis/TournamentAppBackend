@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TournamentAppBackend.DTO.Groups;
+using TournamentAppBackend.DTO.Matches;
 using TournamentAppBackend.Services.Groups;
 
 namespace TournamentAppBackend.Controllers
 {
     [ApiController]
     [Route("api/v1")]
-    [Authorize(Roles = "ADMIN")]
     public class GroupController : ControllerBase
     {
         private readonly IGroupService _service;
@@ -17,6 +17,7 @@ namespace TournamentAppBackend.Controllers
             _service = service;
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost("tournaments/{tournamentId}/groups")]
         public async Task<IActionResult> Create(Guid tournamentId, [FromBody] CreateGroupDTO dto)
         {
@@ -24,6 +25,7 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
+        [AllowAnonymous]
         [HttpGet("tournaments/{tournamentId}/groups")]
         public async Task<IActionResult> GetByTournament(Guid tournamentId)
         {
@@ -31,6 +33,7 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
+        [AllowAnonymous]
         [HttpGet("groups/{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -38,6 +41,14 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
+        [HttpGet("groups/{groupId}/matches")]
+        public async Task<ActionResult<List<MatchResponseDTO>>> GetMatches(Guid groupId)
+        {
+            var matches = await _service.GetMatchesAsync(groupId);
+            return Ok(matches);
+        }
+
+        [Authorize(Roles = "ADMIN")]
         [HttpPatch("groups/{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateGroupDTO dto)
         {
@@ -45,6 +56,7 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "ADMIN")]
         [HttpDelete("groups/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {

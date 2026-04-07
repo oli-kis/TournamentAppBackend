@@ -22,6 +22,9 @@ namespace TournamentAppBackend.Services.Tournaments
                 StartDate = dto.StartDate,
                 EndDate = dto.EndDate,
                 Status = "DRAFT",
+                Pitches = dto.Pitches,
+                MatchLengthInMinutes = dto.MatchLengthInMinutes,
+                TransitionTime = dto.TransitionTime,
                 KnockoutStarted = false,
                 KnockoutTeamCount = 0,
                 KnockoutMatches = [],
@@ -65,6 +68,8 @@ namespace TournamentAppBackend.Services.Tournaments
 
             if (dto.Name != null) tournament.Name = dto.Name;
             if (dto.Status != null) tournament.Status = dto.Status;
+            if (dto.Pitches != null) tournament.Pitches = (int)dto.Pitches;
+            if (dto.MatchLengthInMinutes != null) tournament.MatchLengthInMinutes = (int)dto.MatchLengthInMinutes;
 
             await _db.SaveChangesAsync();
 
@@ -82,6 +87,17 @@ namespace TournamentAppBackend.Services.Tournaments
             await _db.SaveChangesAsync();
         }
 
+        public async Task DeleteAllAsync()
+        {
+            var tournaments = await _db.Set<Tournament>().ToListAsync();
+
+            if (tournaments.Count == 0)
+                return;
+
+            _db.RemoveRange(tournaments);
+            await _db.SaveChangesAsync();
+        }
+
         private static TournamentResponseDTO Map(Tournament t)
         {
             return new TournamentResponseDTO
@@ -91,6 +107,9 @@ namespace TournamentAppBackend.Services.Tournaments
                 StartDate = t.StartDate,
                 EndDate = t.EndDate,
                 Status = t.Status,
+                Pitches = t.Pitches,
+                MatchLengthInMinutes = t.MatchLengthInMinutes,
+                TransitionTime = t.TransitionTime,
                 KnockoutStarted = t.KnockoutStarted,
                 KnockoutTeamCount = t.KnockoutTeamCount,
                 KnockoutMatches = t.KnockoutMatches,

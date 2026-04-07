@@ -77,6 +77,15 @@ namespace TournamentAppBackend.Services.User
             return users.Select(Map).ToList();
         }
 
+        public async Task<List<UserResponseDTO>> GetAllActiveRefereesAsync()
+        {
+            var users = await _db.Users
+                .Where(u => u.Role == "REFEREE" && u.Status == "ACTIVE")
+                .ToListAsync();
+
+            return users.Select(Map).ToList();
+        }
+
         public async Task<UserResponseDTO> UpdateAsync(Guid id, UpdateUserDTO dto)
         {
             var user = await _db.Users.FindAsync(id);

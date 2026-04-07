@@ -1,4 +1,5 @@
-﻿using TournamentAppBackend.DTO.Teams;
+﻿using TournamentAppBackend.DTO.Search;
+using TournamentAppBackend.DTO.Teams;
 
 namespace TournamentAppBackend.Services.Teams
 {
@@ -7,6 +8,7 @@ namespace TournamentAppBackend.Services.Teams
         Task<TeamResponseDTO> CreateAsync(Guid groupId, CreateTeamDTO dto);
         Task<List<TeamResponseDTO>> GetByGroupAsync(Guid groupId);
         Task<TeamResponseDTO> GetByIdAsync(Guid id);
+        Task<List<SearchResponseDTO>> SearchAsync(string name);
         Task<TeamResponseDTO> UpdateAsync(Guid id, UpdateTeamDTO dto);
         Task DeleteAsync(Guid id);
     }

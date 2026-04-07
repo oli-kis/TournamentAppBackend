@@ -11,6 +11,9 @@ namespace TournamentAppBackend.DTO.Tournaments
         public string Status { get; set; } = default!;
         public bool KnockoutStarted { get; set; }
         public int KnockoutTeamCount { get; set; }
+        public int Pitches { get; set; }
+        public int MatchLengthInMinutes { get; set; }
+        public int TransitionTime { get; set; }
 
         public ICollection<KnockoutMatch> KnockoutMatches { get; set; } = new List<KnockoutMatch>();
         public ICollection<PlacementMatch> PlacementMatches { get; set; } = new List<PlacementMatch>();

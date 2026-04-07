@@ -60,6 +60,14 @@ namespace TournamentAppBackend.Controllers
         [HttpGet("referees")]
         public async Task<IActionResult> GetReferees()
         {
+            var result = await _userService.GetAllActiveRefereesAsync();
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("all-referees")]
+        public async Task<IActionResult> GetAllReferees()
+        {
             var result = await _userService.GetAllRefereesAsync();
             return Ok(result);
         }

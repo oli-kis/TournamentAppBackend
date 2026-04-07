@@ -9,5 +9,6 @@ namespace TournamentAppBackend.Services.Tournaments
         Task<TournamentResponseDTO> GetByIdAsync(Guid id);
         Task<TournamentResponseDTO> UpdateAsync(Guid id, UpdateTournamentDTO dto);
         Task DeleteAsync(Guid id);
+        Task DeleteAllAsync();
     }
 }

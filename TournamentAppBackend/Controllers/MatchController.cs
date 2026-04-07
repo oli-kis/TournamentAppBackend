@@ -25,7 +25,7 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -33,7 +33,7 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -110,7 +110,7 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("{matchId}/goals")]
         public async Task<IActionResult> GetGoals(Guid matchId)
         {

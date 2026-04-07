@@ -15,7 +15,7 @@ namespace TournamentAppBackend.Controllers
             _service = service;
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("groups/{groupId}/standings")]
         public async Task<IActionResult> GetByGroup(Guid groupId)
         {

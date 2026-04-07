@@ -1,4 +1,5 @@
 ﻿using TournamentAppBackend.DTO.Groups;
+using TournamentAppBackend.DTO.Matches;
 
 namespace TournamentAppBackend.Services.Groups
 {
@@ -7,6 +8,7 @@ namespace TournamentAppBackend.Services.Groups
         Task<GroupResponseDTO> CreateAsync(Guid tournamentId, CreateGroupDTO dto);
         Task<List<GroupResponseDTO>> GetByTournamentAsync(Guid tournamentId);
         Task<GroupResponseDTO> GetByIdAsync(Guid id);
+        Task<List<MatchResponseDTO>> GetMatchesAsync(Guid groupId);
         Task<GroupResponseDTO> UpdateAsync(Guid id, UpdateGroupDTO dto);
         Task DeleteAsync(Guid id);
     }
