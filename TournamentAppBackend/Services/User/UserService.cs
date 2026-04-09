@@ -50,6 +50,9 @@ namespace TournamentAppBackend.Services.User
             if (user == null || !VerifyPassword(dto.Password, user.PasswordHash))
                 throw new Exception("Invalid credentials");
 
+            user.Status = "ACTIVE";
+            await _db.SaveChangesAsync();
+
             var token = GenerateJwtToken(user);
 
             return new LoginResponseDTO
