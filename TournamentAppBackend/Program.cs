@@ -46,8 +46,7 @@ builder.Services.AddSwaggerGen(config => {
 });
 
 //builder.Services.AddDbContext<AppDbContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-//builder.Services.AddDbContext<AppDbContext>(options =>options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECTION_STRING")));
-builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql("Host=dpg-d7aiqhshg0os73ejnt70-a.frankfurt-postgres.render.com;Port=5432;Database=fcfricktournament;Username=olivierkistleradmin;Password=ohupOJZR6Rr7JIaf4jmE71puVji12Bu5"));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECTION_STRING")));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITournamentService, TournamentService>();
 builder.Services.AddScoped<IGroupService, GroupService>();
@@ -71,8 +70,7 @@ builder.Services.AddCors(options =>
     });
 });
 
-//var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY")!;
-var jwtKey = "UzwkKl83Sh3tFTmSwvYkwESiUkXjsewBmzm5DTwNB7O"!;
+var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY")!;
 var jwtIssuer = builder.Configuration["Jwt:Issuer"]!;
 var jwtAudience = builder.Configuration["Jwt:Audience"]!;
 

@@ -125,7 +125,7 @@ namespace TournamentAppBackend.Services.User
 
         private string GenerateJwtToken(Model.UserModel user)
         {
-            var key = _configuration["Jwt:Key"]!;
+            var key = Environment.GetEnvironmentVariable("JWT_KEY")!;
             var issuer = _configuration["Jwt:Issuer"]!;
             var audience = _configuration["Jwt:Audience"]!;
 
