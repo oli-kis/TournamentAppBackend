@@ -56,7 +56,7 @@ builder.Services.AddScoped<IStandingService, StandingService>();
 builder.Services.AddScoped<IMatchGenerationService, MatchGenerationService>();
 builder.Services.AddScoped<IKnockoutService, KnockoutService>();
 
-var originURL = builder.Environment.IsDevelopment() ? "http://localhost:8080" : "https://fc-frick-tournament.vercel.app/";
+var originURL = builder.Environment.IsDevelopment() ? "http://localhost:8080" : "https://fc-frick-tournament.vercel.app";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendPolicy", policy =>
