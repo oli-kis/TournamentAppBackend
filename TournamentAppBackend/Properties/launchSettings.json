@@ -1,23 +1,24 @@
-﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
+{
   "profiles": {
     "http": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "http://localhost:5275",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5275"
     },
     "https": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:7118;http://localhost:5275",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "REQUEST_URL": "http://localhost:8080",
+        "CONNECTION_STRING": "Host=localhost;Port=5432;Database=tournamentdb;Username=postgres;Password=postgresql11!",
+        "JWT_KEY": "UzwkKl83Sh3tFTmSwvYkwESiUkXjsewBmzm5DTwNB7O"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7118;http://localhost:5275"
     }
-  }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
 }

@@ -45,7 +45,8 @@ builder.Services.AddSwaggerGen(config => {
             });
 });
 
-builder.Services.AddDbContext<AppDbContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+//builder.Services.AddDbContext<AppDbContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<AppDbContext>(options =>options.UseNpgsql(Environment.GetEnvironmentVariable("CONNECTION_STRING")));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITournamentService, TournamentService>();
 builder.Services.AddScoped<IGroupService, GroupService>();
@@ -59,14 +60,14 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontendPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:8080")
+        policy.WithOrigins(Environment.GetEnvironmentVariable("REQUEST_URL"))
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
     });
 });
 
-var jwtKey = builder.Configuration["Jwt:Key"]!;
+var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY")!;
 var jwtIssuer = builder.Configuration["Jwt:Issuer"]!;
 var jwtAudience = builder.Configuration["Jwt:Audience"]!;
 
