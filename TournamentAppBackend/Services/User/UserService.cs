@@ -33,11 +33,28 @@ namespace TournamentAppBackend.Services.User
                 Email = dto.Email,
                 Name = dto.Name,
                 Role = "REFEREE",
-                Status = "ACTIVE",
+                Status = "PENDING",
                 PasswordHash = HashPassword(dto.Password)
             };
 
             _db.Users.Add(user);
+            await _db.SaveChangesAsync();
+
+            return Map(user);
+        }
+        public async Task<UserResponseDTO> ApproveRefereeAsync(Guid id)
+        {
+            var user = await _db.Users.FindAsync(id);
+            if (user == null)
+                throw new Exception("User not found");
+
+            if (user.Role != "REFEREE")
+                throw new Exception("User is not a referee");
+
+            if (user.Status != "PENDING")
+                throw new Exception("Referee is not pending approval");
+
+            user.Status = "OFFLINE";
             await _db.SaveChangesAsync();
 
             return Map(user);
@@ -50,7 +67,10 @@ namespace TournamentAppBackend.Services.User
             if (user == null || !VerifyPassword(dto.Password, user.PasswordHash))
                 throw new Exception("Invalid credentials");
 
-            user.Status = "ACTIVE";
+            if (user.Status == "PENDING")
+                throw new Exception("Referee is not approved");
+
+            user.Status = "ONLINE";
             await _db.SaveChangesAsync();
 
             var token = GenerateJwtToken(user);
@@ -71,6 +91,12 @@ namespace TournamentAppBackend.Services.User
             return Map(user);
         }
 
+        public async Task<List<UserResponseDTO>> GetAllUsersAsync()
+        {
+            var users = await _db.Users.ToListAsync();
+            return users.Select(Map).ToList();
+        }
+
         public async Task<List<UserResponseDTO>> GetAllRefereesAsync()
         {
             var users = await _db.Users
@@ -83,7 +109,25 @@ namespace TournamentAppBackend.Services.User
         public async Task<List<UserResponseDTO>> GetAllActiveRefereesAsync()
         {
             var users = await _db.Users
-                .Where(u => u.Role == "REFEREE" && u.Status == "ACTIVE")
+                .Where(u => u.Role == "REFEREE" && u.Status == "ONLINE")
+                .ToListAsync();
+
+            return users.Select(Map).ToList();
+        }
+
+        public async Task<List<UserResponseDTO>> GetAllInactiveRefereesAsync()
+        {
+            var users = await _db.Users
+                .Where(u => u.Role == "REFEREE" && u.Status == "OFFLINE")
+                .ToListAsync();
+
+            return users.Select(Map).ToList();
+        }
+
+        public async Task<List<UserResponseDTO>> GetAllPendingRefereesAsync()
+        {
+            var users = await _db.Users
+                .Where(u => u.Role == "REFEREE" && u.Status == "PENDING")
                 .ToListAsync();
 
             return users.Select(Map).ToList();
@@ -122,7 +166,7 @@ namespace TournamentAppBackend.Services.User
             if (user == null)
                 throw new Exception("User not found");
 
-            user.Status = "INACTIVE";
+            user.Status = "OFFLINE";
             await _db.SaveChangesAsync();
         }
 
@@ -147,7 +191,7 @@ namespace TournamentAppBackend.Services.User
                 issuer: issuer,
                 audience: audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(12),
+                expires: DateTime.UtcNow.AddHours(2),
                 signingCredentials: credentials
             );
 

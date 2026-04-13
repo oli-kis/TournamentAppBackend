@@ -25,6 +25,14 @@ namespace TournamentAppBackend.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "ADMIN")]
+        [HttpPut("referees/{id}/approve")]
+        public async Task<IActionResult> ApproveReferee(Guid id)
+        {
+            var result = await _userService.ApproveRefereeAsync(id);
+            return Ok(result);
+        }
+
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO dto)
@@ -57,10 +65,10 @@ namespace TournamentAppBackend.Controllers
         }
 
         [Authorize(Roles = "ADMIN")]
-        [HttpGet("referees")]
-        public async Task<IActionResult> GetReferees()
+        [HttpGet("all-users")]
+        public async Task<IActionResult> GetAllUsers()
         {
-            var result = await _userService.GetAllActiveRefereesAsync();
+            var result = await _userService.GetAllUsersAsync();
             return Ok(result);
         }
 
@@ -69,6 +77,30 @@ namespace TournamentAppBackend.Controllers
         public async Task<IActionResult> GetAllReferees()
         {
             var result = await _userService.GetAllRefereesAsync();
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("active-referees")]
+        public async Task<IActionResult> GetActivReferees()
+        {
+            var result = await _userService.GetAllActiveRefereesAsync();
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("inactive-referees")]
+        public async Task<IActionResult> GetInactivReferees()
+        {
+            var result = await _userService.GetAllInactiveRefereesAsync();
+            return Ok(result);
+        }
+
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet("pending-referees")]
+        public async Task<IActionResult> GetPendingReferees()
+        {
+            var result = await _userService.GetAllPendingRefereesAsync();
             return Ok(result);
         }
 

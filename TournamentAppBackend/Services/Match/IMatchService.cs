@@ -21,5 +21,7 @@ namespace TournamentAppBackend.Services.Matches
         Task<List<GoalResponseDTO>> GetGoalsAsync(Guid matchId);
         Task DeleteGoalAsync(Guid matchId, Guid goalId);
         Task<MatchResponseDTO> FinishMatchAsync(Guid matchId);
+        Task ResetMatchAsync(Guid matchId);
+
     }
 }

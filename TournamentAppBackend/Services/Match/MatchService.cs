@@ -332,6 +332,35 @@ namespace TournamentAppBackend.Services.Matches
             return await GetByIdAsync(matchId);
         }
 
+        public async Task ResetMatchAsync(Guid matchId)
+        {
+            var match = await _db.Matches
+                .Include(m => m.RefereeAssignments)
+                .Include(m => m.Goals)
+                .FirstOrDefaultAsync(m => m.Id == matchId);
+
+            if (match == null)
+                throw new Exception("Match not found");
+
+            // Soft-delete all goals
+            foreach (var goal in match.Goals)
+                goal.IsDeleted = true;
+
+            // Reset referee readiness
+            foreach (var assignment in match.RefereeAssignments)
+            {
+                assignment.IsReady = false;
+                assignment.ReadyAt = null;
+            }
+
+            // Reset match state
+            match.Status = match.RefereeAssignments.Any() ? "WAITING_FOR_REFEREES" : "SCHEDULED";
+            match.StartedAt = null;
+            match.FinishedAt = null;
+
+            await _db.SaveChangesAsync();
+        }
+
         private static RefereeAssignmentResponseDTO MapAssignment(RefereeAssignment a)
         {
             return new RefereeAssignmentResponseDTO

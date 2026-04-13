@@ -133,5 +133,12 @@ namespace TournamentAppBackend.Controllers
             var result = await _service.FinishMatchAsync(matchId);
             return Ok(result);
         }
+
+        [HttpPost("{matchId}/reset")]
+        public async Task<IActionResult> Reset(Guid matchId)
+        {
+            await _service.ResetMatchAsync(matchId);
+            return Ok();
+        }
     }
 }
